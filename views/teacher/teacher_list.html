@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>学IT - 后台管理系统</title>
-    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./assets/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="./assets/nprogress/nprogress.css">
-    <link rel="stylesheet" href="./less/index.css">
+    <link rel="stylesheet" href="/public/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/assets/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="/public/assets/nprogress/nprogress.css">
+    <link rel="stylesheet" href="/public/less/index.css">
 </head>
 <body>
     
@@ -169,8 +169,9 @@
                                 <th>操作</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
+                        <tbody >
+                            <!--todo-->
+        <!--                    <tr>
                                 <td>1</td>
                                 <td>赵玉川</td>
                                 <td>布头儿</td>
@@ -179,10 +180,11 @@
                                 <td>15901256171</td>
                                 <td>
                                     <a href="#teacherModal" data-toggle="modal" class="btn btn-info btn-xs">查 看</a>
-                                    <a href="./teacher_add.html" class="btn btn-info btn-xs">编 辑</a>
-                                    <a href="javascript::" class="btn btn-warning btn-xs">注 销</a>
+                                    &lt;!&ndash;<a href="./teacher_add.html" class="btn btn-info btn-xs" ">编 辑</a>&ndash;&gt;
+                                    <a  href="#" class="btn btn-info btn-xs" id="edit-teacher">编 辑</a>
+                                    <a href="javascript:;" class="btn btn-warning btn-xs">注 销</a>
                                 </td>
-                            </tr>
+                            </tr>-->
                         </tbody>
                     </table>
                 </div>
@@ -190,7 +192,7 @@
         </div>
     </div>
 
-    <!-- 模态框 添加课程 -->
+    <!-- 模态框 添加讲师信息 -->
     <div class="modal fade" id="teacherModal">
         <div class="modal-dialog" style="width: 750px;">
             <div class="panel panel-default">
@@ -240,10 +242,100 @@
             </div>
         </div>
     </div>
+    <!--渲染讲师信息模板-->
 
-    <script src="./assets/jquery/jquery.min.js"></script>
-    <script src="./assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="./assets/nprogress/nprogress.js"></script>
-    <script src="./js/common.js"></script>
+    <script type="text/html" id="teacher_info">
+        <%
+            var Date = get().Date;
+            var String = get().String;
+            var getAge = function (str){
+                var age = new Date().getFullYear() - str.split("-")[0];
+                return age;
+            }
+        %>
+        <% for(var i=0; i< result.length; i++) { %>
+        <tr>
+            <td><%= (i+1) %></td>
+            <td><%= result[i].tc_name %></td>
+            <td><%= result[i].tc_roster %></td>
+            <td><%= getAge(result[i].tc_birthday) %></td>
+            <td><%= result[i].tc_gender==1?"女":"男" %></td>
+            <td><%= result[i].tc_cellphone %></td>
+            <td>
+                <a href="#teacherModal" data-toggle="modal" class="btn btn-info btn-xs">查 看</a>
+                <!--<a href="./teacher_add.html" class="btn btn-info btn-xs" ">编 辑</a>-->
+                <a  href="#" class="btn btn-info btn-xs edit_teacher" id="<%= result[i].tc_id %>">编 辑</a>
+                <a href="javascript:;" class="btn btn-warning btn-xs">注 销</a>
+            </td>
+        </tr>
+        <% } %>
+    </script>
+
+    <script src="/public/assets/jquery/jquery.min.js"></script>
+    <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/public/assets/nprogress/nprogress.js"></script>
+    <script src="/public/assets/artTemplate/template-native.js"></script>
+    <script src="/public/js/common.js"></script>
+
+    <script>
+        $(function () {
+
+            // 渲染列表
+            init();
+            // 编辑按钮点击处理
+            editClickHandle();
+            // 根据后台数据，得到其年龄
+            template.helper("get",function () {
+               return {
+                   $: jQuery,
+                   Math: window.Math,
+                   Date: window.Date,
+                   String: window.String
+               }
+            });
+
+        });
+        // 渲染列表
+        function init() {
+            $.ajax({
+                url: "/api/teacher",
+                type: "get",
+                success: function (data) {
+                    console.log(data);
+                    var html = template("teacher_info",data);
+                    $(".teacher-list").find("tbody").html(html);
+                },
+                error: function () {
+                    console.log("请求失败");
+                }
+            });
+        }
+        // 编辑按钮点击处理
+        function editClickHandle() {
+            $(".teacher-list").find("tbody").on("click",".edit_teacher",function () {
+                var id = $(this).attr("id");
+//                console.log(id);
+                $.ajax({
+                    url: "/api/teacher/edit",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        tc_id:1
+                    },
+                    success: function (data) {
+                    console.log(data);
+                        if(data.code == 200){
+                            // 编辑讲师和添加讲师的页面略有不同，请注意
+                            location.href = "/teacher/teacher_add?tc_id="+id;
+                        }
+                    },
+                    error: function () {
+                        console.log("请求失败");
+                    }
+                })
+            });
+        }
+
+    </script>
 </body>
 </html>

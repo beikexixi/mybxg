@@ -12,7 +12,7 @@ define(['jquery','cookie'],function ($) {
                     // 登录成功
                     // 保存用户信息
                     $.cookie("per_info",JSON.stringify(data.result),{
-                        expires: 2,
+                        // expires: 1,
                         path: "/"
                     });
                     location.href = "/main/index";

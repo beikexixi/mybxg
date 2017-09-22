@@ -16,7 +16,7 @@ define(['jquery','cookie'],function ($) {
             type: "post",
             dataType: "json",
             success: function (data) {
-                console.log(data);
+                // console.log(data);
                 if (data.code == 200) {
                     location.href = "/main/login";
                 }
@@ -32,12 +32,12 @@ define(['jquery','cookie'],function ($) {
         location.href = "/main/login";
     }
 
-// 设置用户头部信息
+    // 设置用户头部信息
     console.log($.cookie("per_info"));
     var loginInfo = $.cookie("per_info");
     var infoObj = loginInfo && JSON.parse(loginInfo);
     // $("#per_info img").attr("src",infoObj.tc_avatar);
-    $("#per_info >h4").html(infoObj.tc_name);
+    $("#person_info >h4").html(infoObj.tc_name);
 });
 
 

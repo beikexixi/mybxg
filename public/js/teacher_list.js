@@ -36,7 +36,7 @@ define(['jquery', 'template','bootstrap'], function ($, template) {
             type: "get",
             dataType: "json",
             success: function (data) {
-                // console.log(data);
+                console.log(data);
                 var html = template("teacher_info", data);
                 $(".teacher-list").find("tbody").html(html);
             },

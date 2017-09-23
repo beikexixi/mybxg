@@ -37,7 +37,7 @@ define(['jquery','cookie'],function ($) {
     var loginInfo = $.cookie("per_info");
     var infoObj = loginInfo && JSON.parse(loginInfo);
     // $("#per_info img").attr("src",infoObj.tc_avatar);
-    $("#person_info >h4").html(infoObj.tc_name);
+    // $("#person_info >h4").html(infoObj.tc_name);
 });
 
 

@@ -111,7 +111,7 @@
 
 <!--个人中心资料-模板-->
 <script id="settingTpl" type="text/html">
-    <form action="" class="form-horizontal">
+    <form action="" class="form-horizontal" type="">
         <div class="form-group">
             <label for="" class="col-xs-3 control-label">姓名</label>
             <div class="col-xs-5">
@@ -121,7 +121,7 @@
         <div class="form-group">
             <label for="" class="col-xs-3 control-label">头像</label>
             <div class="col-xs-2 preview">
-                {{ if tc_vatar }}
+                {{ if tc_avatar }}
                 <img src="{{tc_avatar}}">
                 {{ else }}
                 <img src="/public/images/default.png">
@@ -157,14 +157,14 @@
         </div>
         <div class="form-group">
             <label for="" class="col-xs-3 control-label">籍贯</label>
-            <div class="col-xs-5">
-                <select name="" class="form-control input-sm">
+            <div class="col-xs-5" id="pcd">
+                <select id="p" data-id="{{tc_province}}" name="" class="form-control input-sm">
                     <option value="">请选择省/市</option>
                 </select>
-                <select name="" class="form-control input-sm">
+                <select id="c" data-id="{{tc_city}}" name="" class="form-control input-sm">
                     <option value="">请选择市/区</option>
                 </select>
-                <select name="" class="form-control input-sm">
+                <select id="d" data-id="{{tc_district}}" name="" class="form-control input-sm">
                     <option value="">请选择区/县</option>
 
                 </select>
@@ -192,7 +192,7 @@
             <label for="" class="col-xs-3 control-label">个人介绍</label>
             <div class="col-xs-5 ckeditor">
                 <textarea name="" rows="15" class="form-control input-sm">
-                    {{# tc_introduce }}
+                    {{@ tc_introduce }}
                 </textarea>
             </div>
         </div>
